@@ -23872,7 +23872,6 @@ module.exports = new (class Git {
     const options = {
       listeners: {
         stdout: (data) => {
-          console.log(command)
           execOutput += data.toString()
         },
       },
@@ -23883,7 +23882,6 @@ module.exports = new (class Git {
     const exitCode = await exec.exec(`git ${command}`, null, options)
 
     if (exitCode === 0) {
-      core.info(`Output ${execOutput}`)
       resolve(execOutput)
 
     } else {
