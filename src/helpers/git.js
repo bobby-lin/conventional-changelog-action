@@ -65,9 +65,12 @@ module.exports = new (class Git {
       },
     }
 
+    core.info(`Running command ${command}`)
+
     const exitCode = await exec.exec(`git ${command}`, null, options)
 
     if (exitCode === 0) {
+      core.info(`Output ${execOutput}`)
       resolve(execOutput)
 
     } else {
@@ -162,7 +165,7 @@ module.exports = new (class Git {
    */
   createTag = (tag) => this.exec(`tag -a ${tag} -m "${tag}"`)
 
-  getStatus = () => this.exec(`status`)
+  getStatus = (status) => this.exec(status)
 
   /**
    * Validates the commands run

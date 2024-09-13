@@ -205,7 +205,8 @@ async function run() {
       }
 
       await git.add('.')
-      await git.getStatus()
+      core.info('Getting git status')
+      await git.getStatus('status')
       await git.commit(gitCommitMessage.replace('{version}', gitTag))
     }
 
