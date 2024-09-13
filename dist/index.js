@@ -23978,7 +23978,7 @@ module.exports = new (class Git {
    */
   createTag = (tag) => this.exec(`tag -a ${tag} -m "${tag}"`)
 
-  getStatus = (status) => this.exec(status)
+  getDiff = () => this.exec('diff-index --cached HEAD')
 
   /**
    * Validates the commands run
@@ -34991,8 +34991,7 @@ async function run() {
       }
 
       await git.add('.')
-      core.info('Getting git status')
-      await git.getStatus('status')
+      await git.getDiff()
       await git.commit(gitCommitMessage.replace('{version}', gitTag))
     }
 
