@@ -5520,10 +5520,10 @@ const { resolve } = __nccwpck_require__(1017)
 
 async function createWriterOpts () {
   const [template, header, commit, footer] = await Promise.all([
-    readFile(__nccwpck_require__.ab + "template.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "header.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "commit.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "footer.hbs", 'utf-8')
+    readFile(__nccwpck_require__.ab + "template1.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "header1.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "commit1.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "footer1.hbs", 'utf-8')
   ])
   const writerOpts = getWriterOpts()
 
@@ -5864,10 +5864,10 @@ async function createWriterOpts (config) {
     commit,
     footer
   ] = await Promise.all([
-    readFile(__nccwpck_require__.ab + "template1.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "header1.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "commit1.hbs", 'utf-8'),
-    readFile(__nccwpck_require__.ab + "footer1.hbs", 'utf-8')
+    readFile(__nccwpck_require__.ab + "template.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "header.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "commit.hbs", 'utf-8'),
+    readFile(__nccwpck_require__.ab + "footer.hbs", 'utf-8')
   ])
   const writerOpts = getWriterOpts(finalConfig)
 
@@ -23872,14 +23872,18 @@ module.exports = new (class Git {
     const options = {
       listeners: {
         stdout: (data) => {
+          console.log(command)
           execOutput += data.toString()
         },
       },
     }
 
+    core.info(`Running command ${command}`)
+
     const exitCode = await exec.exec(`git ${command}`, null, options)
 
     if (exitCode === 0) {
+      core.info(`Output ${execOutput}`)
       resolve(execOutput)
 
     } else {
@@ -23973,6 +23977,8 @@ module.exports = new (class Git {
    * @return {Promise<>}
    */
   createTag = (tag) => this.exec(`tag -a ${tag} -m "${tag}"`)
+
+  getStatus = (status) => this.exec(status)
 
   /**
    * Validates the commands run
@@ -34985,6 +34991,8 @@ async function run() {
       }
 
       await git.add('.')
+      core.info('Getting git status')
+      await git.getStatus('status')
       await git.commit(gitCommitMessage.replace('{version}', gitTag))
     }
 
@@ -34992,7 +35000,7 @@ async function run() {
     if (!skipTag) {
       await git.createTag(gitTag)
     } else {
-      core.info('We not going to the tag the GIT changes')
+      core.info('We are not going to the tag the GIT changes')
     }
 
     if (gitPush) {
@@ -35009,7 +35017,7 @@ async function run() {
       }
 
     } else {
-      core.info('We not going to push the GIT changes')
+      core.info('We are not going to push the GIT changes')
     }
 
     // Set outputs so other actions (for example actions/create-release) can use it
@@ -35052,6 +35060,7 @@ process.on('unhandledRejection', (reason, promise) => {
 })
 
 run()
+
 })();
 
 module.exports = __webpack_exports__;
