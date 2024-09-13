@@ -59,6 +59,7 @@ module.exports = new (class Git {
     const options = {
       listeners: {
         stdout: (data) => {
+          console.log(command)
           execOutput += data.toString()
         },
       },
