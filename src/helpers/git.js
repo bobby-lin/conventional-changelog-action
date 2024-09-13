@@ -161,6 +161,8 @@ module.exports = new (class Git {
    */
   createTag = (tag) => this.exec(`tag -a ${tag} -m "${tag}"`)
 
+  getStatus = () => this.exec(`status`)
+
   /**
    * Validates the commands run
    */

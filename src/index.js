@@ -205,6 +205,7 @@ async function run() {
       }
 
       await git.add('.')
+      await git.getStatus()
       await git.commit(gitCommitMessage.replace('{version}', gitTag))
     }
 
